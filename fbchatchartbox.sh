@@ -4,8 +4,8 @@ SHIFT=${2-0}
 TIMESTAMPS=$(</dev/stdin grep -A1 "$NAME" | grep ":" | cut -c5-)
 DAYS="Mon Tue Wed Thu Fri Sat Sun"
 SHADES="░▒▓█"
-MAX=$(echo "$TIMESTAMPS" | fb-shift-ts.py "$SHIFT" | sort | uniq -c | sort -rn | head -1 \
-      | cut -c-7)
+DATA=$(echo "$TIMESTAMPS" | fb-shift-ts.py "$SHIFT")
+MAX=$(echo "$DATA" | sort | uniq -c | sort -rn | head -1 | cut -c-7)
 
 for row in {0..1}; do
     printf "    "
@@ -17,8 +17,7 @@ done
 for day in $DAYS; do
     printf "$day "
     for hour in {00..23}; do
-        count=$(echo "$TIMESTAMPS" | fb-shift-ts.py "$SHIFT" | sort | uniq -c \
-                | grep "$day $hour" | cut -c1-7 | tr -d ' ')
+        count=$(echo "$DATA" | sort | uniq -c | grep "$day $hour" | cut -c1-7 | tr -d ' ')
         if [ -z "$count" ]; then
             printf " "
         else
