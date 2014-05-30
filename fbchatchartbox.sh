@@ -6,11 +6,13 @@ DAYS="Mon Tue Wed Thu Fri Sat Sun"
 SHADES="░▒▓█"
 DATA=$(echo "$TIMESTAMPS" | fb-shift-ts.py "$SHIFT")
 MAX=$(echo "$DATA" | sort | uniq -c | sort -rn | head -1 | cut -c-7)
+HOURS=(12 {1..12} {1..11})
 
 for row in {0..1}; do
     printf "    "
-    for hour in {00..23}; do
-        printf ${hour:$row:1}
+    for hour in ${HOURS[@]}; do
+        hour=$(printf "%2d" $hour)
+        printf "${hour:$row:1}"
     done
     echo
 done
